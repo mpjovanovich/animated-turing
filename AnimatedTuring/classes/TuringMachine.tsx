@@ -1,5 +1,3 @@
-import programs from "./programs";
-
 /* The machine can do the following:
 - Print
 - Erase
@@ -75,8 +73,7 @@ export class TuringMachine {
 
   scan(): void {
     // Get the behavior that maps to the current mConfig and symbol
-    // TODO: Set initial config in the actual program object
-    const configSymbol = this.mConfig + this.tape[this.r];
+    const configSymbol = `${this.mConfig}-${this.tape[this.r]}`;
     const behavior = this.program.behaviors.get(configSymbol);
 
     // Execute the operations

@@ -6,13 +6,14 @@ import {
   Text,
 } from "react-native";
 
-import { TuringMachine } from "./classes/TuringMachine";
-
 import programs from "./classes/programs";
+
+import { TuringMachine } from "./classes/TuringMachine";
 
 export default function App() {
   // This is where we pick the program and
-  const turingMachine = new TuringMachine(programs.alternateZeroOne);
+  //   const turingMachine = new TuringMachine(programs.alternateZeroOne1);
+  const turingMachine = new TuringMachine(programs.alternateZeroOne2);
 
   return (
     <SafeAreaView style={styles.container}>
