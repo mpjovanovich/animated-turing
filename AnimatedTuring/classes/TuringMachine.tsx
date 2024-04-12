@@ -25,10 +25,14 @@ export class Behavior {
   }
 }
 
-export type BehaviorMap = Map<string, Behavior>;
+export interface Program {
+  initialConfig: string;
+  behaviors: Map<string, Behavior>;
+}
 
 export class TuringMachine {
-  program: BehaviorMap;
+  program: Program;
+
   // Terminology per Turing's original paper:
   // the "machine configuration" or "state" of the machine
   mConfig: string;
@@ -39,11 +43,11 @@ export class TuringMachine {
   // The current position of the read/write head
   r: number = 0;
 
-  constructor(program: BehaviorMap, mConfig: string) {
+  constructor(program: Program) {
     this.tape = [""];
     this.r = 0;
     this.program = program;
-    this.mConfig = mConfig;
+    this.mConfig = program.initialConfig;
   }
 
   readonly operationFunction: Map<Operation, () => void> = new Map([
@@ -71,8 +75,9 @@ export class TuringMachine {
 
   scan(): void {
     // Get the behavior that maps to the current mConfig and symbol
+    // TODO: Set initial config in the actual program object
     const configSymbol = this.mConfig + this.tape[this.r];
-    const behavior = this.program.get(configSymbol);
+    const behavior = this.program.behaviors.get(configSymbol);
 
     // Execute the operations
     if (behavior) {

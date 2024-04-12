@@ -11,7 +11,9 @@ import { TuringMachine } from "./classes/TuringMachine";
 import programs from "./classes/programs";
 
 export default function App() {
-  const turingMachine = new TuringMachine(programs.alternateZeroOne, "b");
+  // This is where we pick the program and
+  const turingMachine = new TuringMachine(programs.alternateZeroOne);
+
   return (
     <SafeAreaView style={styles.container}>
       <Text>Turing Machine...</Text>
