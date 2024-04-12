@@ -70,7 +70,6 @@ class TuringMachine {
     ],
     [Operation.LEFT, () => this.moveLeft()],
     [Operation.RIGHT, () => this.moveRight()],
-    [Operation.STAY, () => {}],
   ]);
 
   scan(): void {
