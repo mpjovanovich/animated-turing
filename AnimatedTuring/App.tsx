@@ -5,10 +5,13 @@ import {
   StyleSheet,
   Text,
 } from "react-native";
-import TuringMachine from "./classes/TuringMachine";
+
+import { TuringMachine } from "./classes/TuringMachine";
+
+import programs from "./classes/programs";
 
 export default function App() {
-  const turingMachine = new TuringMachine("b");
+  const turingMachine = new TuringMachine(programs.alternateZeroOne, "b");
   return (
     <SafeAreaView style={styles.container}>
       <Text>Turing Machine...</Text>

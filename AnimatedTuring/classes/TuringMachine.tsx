@@ -1,3 +1,5 @@
+import programs from "./programs";
+
 /* The machine can do the following:
 - Print
 - Erase
@@ -5,7 +7,7 @@
 - Move right
 - Stay
 */
-enum Operation {
+export enum Operation {
   PRINT0 = "P0",
   PRINT1 = "P1",
   ERASE = "E",
@@ -13,7 +15,7 @@ enum Operation {
   RIGHT = "R",
 }
 
-class Behavior {
+export class Behavior {
   operations: Operation[];
   finalMConfig: string;
 
@@ -23,7 +25,10 @@ class Behavior {
   }
 }
 
-class TuringMachine {
+export type BehaviorMap = Map<string, Behavior>;
+
+export class TuringMachine {
+  program: BehaviorMap;
   // Terminology per Turing's original paper:
   // the "machine configuration" or "state" of the machine
   mConfig: string;
@@ -34,20 +39,12 @@ class TuringMachine {
   // The current position of the read/write head
   r: number = 0;
 
-  constructor(mConfig: string) {
+  constructor(program: BehaviorMap, mConfig: string) {
     this.tape = [""];
     this.r = 0;
+    this.program = program;
     this.mConfig = mConfig;
   }
-
-  // We will just combine the mConfig and symbol into a single key.
-  // This will eventually be passed in as the "program" to run.
-  readonly configurationBehavior: Map<string, Behavior> = new Map([
-    ["b", new Behavior([Operation.PRINT0, Operation.RIGHT], "c")],
-    ["c", new Behavior([Operation.RIGHT], "e")],
-    ["e", new Behavior([Operation.PRINT1, Operation.RIGHT], "k")],
-    ["k", new Behavior([Operation.RIGHT], "b")],
-  ]);
 
   readonly operationFunction: Map<Operation, () => void> = new Map([
     [
@@ -75,7 +72,7 @@ class TuringMachine {
   scan(): void {
     // Get the behavior that maps to the current mConfig and symbol
     const configSymbol = this.mConfig + this.tape[this.r];
-    const behavior = this.configurationBehavior.get(configSymbol);
+    const behavior = this.program.get(configSymbol);
 
     // Execute the operations
     if (behavior) {
@@ -133,5 +130,3 @@ class TuringMachine {
     console.log(tapeString);
   }
 }
-
-export default TuringMachine;
