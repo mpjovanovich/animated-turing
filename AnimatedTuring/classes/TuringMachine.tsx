@@ -1,13 +1,3 @@
-/*
-This class represents a Turing machine.
-
-Terminology:
-- Tape = an infinite array of squares 
-- Square = a cell in the tape
-- r = index of the current square
-
-*/
-
 /* The machine can do the following:
 - Print
 - Erase
@@ -34,8 +24,14 @@ class Behavior {
 }
 
 class TuringMachine {
+  // Terminology per Turing's original paper:
+  // the "machine configuration" or "state" of the machine
   mConfig: string;
+
+  // An infinite tape of symbols
   tape: string[];
+
+  // The current position of the read/write head
   r: number = 0;
 
   constructor(mConfig: string) {
@@ -46,14 +42,14 @@ class TuringMachine {
 
   // We will just combine the mConfig and symbol into a single key.
   // This will eventually be passed in as the "program" to run.
-  readonly instructionMap: Map<string, Behavior> = new Map([
+  readonly configurationBehavior: Map<string, Behavior> = new Map([
     ["b", new Behavior([Operation.PRINT0, Operation.RIGHT], "c")],
     ["c", new Behavior([Operation.RIGHT], "e")],
     ["e", new Behavior([Operation.PRINT1, Operation.RIGHT], "k")],
     ["k", new Behavior([Operation.RIGHT], "b")],
   ]);
 
-  readonly operationMap: Map<Operation, () => void> = new Map([
+  readonly operationFunction: Map<Operation, () => void> = new Map([
     [
       Operation.PRINT0,
       () => {
@@ -80,12 +76,12 @@ class TuringMachine {
   scan(): void {
     // Get the behavior that maps to the current mConfig and symbol
     const configSymbol = this.mConfig + this.tape[this.r];
-    const behavior = this.instructionMap.get(configSymbol);
+    const behavior = this.configurationBehavior.get(configSymbol);
 
     // Execute the operations
     if (behavior) {
       behavior.operations.forEach((operation) => {
-        const operationFunction = this.operationMap.get(operation);
+        const operationFunction = this.operationFunction.get(operation);
         if (operationFunction) {
           operationFunction();
         } else {
@@ -123,8 +119,6 @@ class TuringMachine {
   printState(): void {
     this.printTape();
     console.log("mConfig: ", this.mConfig);
-    // Not needed because we're showing it on the tape printout
-    // console.log("r: ", this.r);
   }
 
   printTape(): void {
