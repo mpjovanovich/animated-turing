@@ -26,8 +26,16 @@ export class Behavior {
 }
 
 export interface Program {
+  // The starting configuration of the machine
   initialConfig: string;
+
+  // This is a map of the form "mConfig-symbol" to Behavior
   behaviors: Map<string, Behavior>;
+
+  // There are often many inputs that map to a single Behavior.
+  // This allows for a function to be called to resolve the mConfig and symbol
+  // to something in the behaviors map.
+  symbolResolutionFunctions: Map<string, (s: string) => string>;
 }
 
 export class TuringMachine {
@@ -87,23 +95,35 @@ export class TuringMachine {
 
   scan(): void {
     // Get the behavior that maps to the current mConfig and symbol
-    const configSymbol = `${this.mConfig}-${this.tape[this.r]}`;
-    const behavior = this.program.behaviors.get(configSymbol);
+    // const configSymbol = `${this.mConfig}-${this.tape[this.r]}`;
+    // const configSymbol = this.program.symbolResolutionFunctions.get(this.mConfig)(this.tape[this.r]);
 
-    // Execute the operations
-    if (behavior) {
-      behavior.operations.forEach((operation) => {
-        const operationFunction = this.operationFunction.get(operation);
-        if (operationFunction) {
-          operationFunction();
-        } else {
-          throw new Error("No operation found for operation: " + operation);
-        }
-      });
-      this.mConfig = behavior.finalMConfig;
-    } else {
+    const symbolResolutionFunction = this.program.symbolResolutionFunctions.get(
+      this.mConfig
+    );
+    if (!symbolResolutionFunction) {
+      throw new Error(
+        `No symbol resolution function found for mConfig: ${this.mConfig}`
+      );
+    }
+
+    // Get the configSymbol by calling the function
+    const configSymbol = symbolResolutionFunction(this.tape[this.r]);
+    const behavior = this.program.behaviors.get(configSymbol);
+    if (!behavior) {
       throw new Error("No behavior found for configSymbol: " + configSymbol);
     }
+
+    // Execute the operations
+    behavior.operations.forEach((operation) => {
+      const operationFunction = this.operationFunction.get(operation);
+      if (operationFunction) {
+        operationFunction();
+      } else {
+        throw new Error("No operation found for operation: " + operation);
+      }
+    });
+    this.mConfig = behavior.finalMConfig;
 
     // Debug
     this.printState();

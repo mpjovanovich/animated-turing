@@ -11,8 +11,8 @@ import programs from "./classes/programs";
 import { TuringMachine } from "./classes/TuringMachine";
 
 export default function App() {
-  // const turingMachine = new TuringMachine(programs.alternateZeroOne1);
-  // const turingMachine = new TuringMachine(programs.alternateZeroOne2);
+  //   const turingMachine = new TuringMachine(programs.alternateZeroOne1);
+  //   const turingMachine = new TuringMachine(programs.alternateZeroOne2);
   const turingMachine = new TuringMachine(programs.increasingOnes);
 
   return (
