@@ -6,11 +6,13 @@
 - Stay
 */
 export enum Operation {
-  PRINT0 = "P0",
-  PRINT1 = "P1",
-  ERASE = "E",
-  LEFT = "L",
-  RIGHT = "R",
+  PRINT0,
+  PRINT1,
+  PRINT_SCHWA,
+  PRINTX,
+  ERASE,
+  LEFT,
+  RIGHT,
 }
 
 export class Behavior {
@@ -59,6 +61,18 @@ export class TuringMachine {
       Operation.PRINT1,
       () => {
         this.printToTape("1");
+      },
+    ],
+    [
+      Operation.PRINT_SCHWA,
+      () => {
+        this.printToTape("ə");
+      },
+    ],
+    [
+      Operation.PRINTX,
+      () => {
+        this.printToTape("x");
       },
     ],
     [
