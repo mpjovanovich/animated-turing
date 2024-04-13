@@ -15,7 +15,9 @@ export enum Operation {
   RIGHT,
 }
 
-export class Behavior {
+// It's helpful for me to think of operations in terms of state-action pairs
+// Each state (mConfig, symbol) maps to an action
+export class Action {
   operations: Operation[];
   finalMConfig: string;
 
@@ -29,12 +31,15 @@ export interface Program {
   // The starting configuration of the machine
   initialConfig: string;
 
-  // This is a map of the form "mConfig-symbol" to Behavior
-  behaviors: Map<string, Behavior>;
+  // This is a map of the form "mConfig-symbol" to Action -
+  // the state-action pairs
+  actions: Map<string, Action>;
 
-  // There are often many inputs that map to a single Behavior.
+  // There are often many inputs that map to a single Action.
+  // We represent state as a string, but that string can imply multiple states.
+  // - e.g. "not 0" or "any value"
   // This allows for a function to be called to resolve the mConfig and symbol
-  // to something in the behaviors map.
+  // to something in the actions map.
   symbolResolutionFunctions: Map<string, (s: string) => string>;
 }
 
@@ -94,7 +99,7 @@ export class TuringMachine {
   ]);
 
   scan(): void {
-    // Get the behavior that maps to the current mConfig and symbol
+    // Get the action that maps to the current mConfig and symbol
     // const configSymbol = `${this.mConfig}-${this.tape[this.r]}`;
     // const configSymbol = this.program.symbolResolutionFunctions.get(this.mConfig)(this.tape[this.r]);
 
@@ -109,13 +114,13 @@ export class TuringMachine {
 
     // Get the configSymbol by calling the function
     const configSymbol = symbolResolutionFunction(this.tape[this.r]);
-    const behavior = this.program.behaviors.get(configSymbol);
-    if (!behavior) {
-      throw new Error("No behavior found for configSymbol: " + configSymbol);
+    const action = this.program.actions.get(configSymbol);
+    if (!action) {
+      throw new Error("No action found for configSymbol: " + configSymbol);
     }
 
     // Execute the operations
-    behavior.operations.forEach((operation) => {
+    action.operations.forEach((operation) => {
       const operationFunction = this.operationFunction.get(operation);
       if (operationFunction) {
         operationFunction();
@@ -123,7 +128,7 @@ export class TuringMachine {
         throw new Error("No operation found for operation: " + operation);
       }
     });
-    this.mConfig = behavior.finalMConfig;
+    this.mConfig = action.finalMConfig;
 
     // Debug
     this.printState();
