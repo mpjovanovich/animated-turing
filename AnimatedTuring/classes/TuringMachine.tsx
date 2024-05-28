@@ -166,18 +166,12 @@ export class TuringMachine {
   }
 
   moveRight(): void {
-    // console.log("Move right before");
-    // console.log(this.r);
-
     this.r++;
     if (this.r >= this.tape.length) {
       this.tape.push("");
       this.onTapeWrite(this.tape);
     }
     this.onRMove(this.r);
-
-    // console.log("Move right after");
-    // console.log(this.r);
   }
 
   writeToTape(symbol: string): void {
