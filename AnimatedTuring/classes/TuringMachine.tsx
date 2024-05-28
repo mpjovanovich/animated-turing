@@ -56,42 +56,55 @@ export class TuringMachine {
   // The current position of the read/write head
   r: number = 0;
 
-  constructor(program: Program) {
+  // Event handlers
+  onTapeWrite: (tape: string[]) => void;
+  onMCConfigChange: (mConfig: string) => void;
+  onRMove: (r: number) => void;
+
+  constructor(
+    program: Program,
+    onTapeWrite: (tape: string[]) => void,
+    onMCConfigChange: (mConfig: string) => void,
+    onRMove: (r: number) => void
+  ) {
     this.tape = [""];
     this.r = 0;
     this.program = program;
     this.mConfig = program.initialConfig;
+    this.onTapeWrite = onTapeWrite;
+    this.onMCConfigChange = onMCConfigChange;
+    this.onRMove = onRMove;
   }
 
   readonly operationFunction: Map<Operation, () => void> = new Map([
     [
       Operation.PRINT0,
       () => {
-        this.printToTape("0");
+        this.writeToTape("0");
       },
     ],
     [
       Operation.PRINT1,
       () => {
-        this.printToTape("1");
+        this.writeToTape("1");
       },
     ],
     [
       Operation.PRINT_SCHWA,
       () => {
-        this.printToTape("ə");
+        this.writeToTape("ə");
       },
     ],
     [
       Operation.PRINTX,
       () => {
-        this.printToTape("x");
+        this.writeToTape("x");
       },
     ],
     [
       Operation.ERASE,
       () => {
-        this.printToTape("");
+        this.writeToTape("");
       },
     ],
     [Operation.LEFT, () => this.moveLeft()],
@@ -100,9 +113,6 @@ export class TuringMachine {
 
   scan(): void {
     // Get the action that maps to the current mConfig and symbol
-    // const configSymbol = `${this.mConfig}-${this.tape[this.r]}`;
-    // const configSymbol = this.program.symbolResolutionFunctions.get(this.mConfig)(this.tape[this.r]);
-
     const symbolResolutionFunction = this.program.symbolResolutionFunctions.get(
       this.mConfig
     );
@@ -128,10 +138,12 @@ export class TuringMachine {
         throw new Error("No operation found for operation: " + operation);
       }
     });
+
     this.mConfig = action.finalMConfig;
+    this.onMCConfigChange(this.mConfig);
 
     // Debug
-    this.printState();
+    // this.printState();
   }
 
   moveLeft(): void {
@@ -140,17 +152,21 @@ export class TuringMachine {
       this.tape.unshift("");
       this.r = 0;
     }
+    this.onRMove(this.r);
   }
 
   moveRight(): void {
     this.r++;
     if (this.r >= this.tape.length) {
       this.tape.push("");
+      this.onTapeWrite(this.tape);
     }
+    this.onRMove(this.r);
   }
 
-  printToTape(symbol: string): void {
+  writeToTape(symbol: string): void {
     this.tape[this.r] = symbol;
+    this.onTapeWrite(this.tape);
   }
 
   printState(): void {
