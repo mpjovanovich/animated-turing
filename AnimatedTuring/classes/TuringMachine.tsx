@@ -112,6 +112,9 @@ export class TuringMachine {
   ]);
 
   scan(): void {
+    // DEBUg
+    // console.log("Current r: ", this.r);
+
     // Get the action that maps to the current mConfig and symbol
     const symbolResolutionFunction = this.program.symbolResolutionFunctions.get(
       this.mConfig
@@ -129,6 +132,10 @@ export class TuringMachine {
       throw new Error("No action found for configSymbol: " + configSymbol);
     }
 
+    // DEBUG
+    // console.log(this.r);
+    // console.log(configSymbol);
+
     // Execute the operations
     action.operations.forEach((operation) => {
       const operationFunction = this.operationFunction.get(operation);
@@ -143,7 +150,7 @@ export class TuringMachine {
     this.onMCConfigChange(this.mConfig);
 
     // Debug
-    // this.printState();
+    this.printState();
   }
 
   moveLeft(): void {
@@ -153,15 +160,24 @@ export class TuringMachine {
       this.r = 0;
     }
     this.onRMove(this.r);
+
+    console.log("Move left");
+    console.log(this.r);
   }
 
   moveRight(): void {
+    // console.log("Move right before");
+    // console.log(this.r);
+
     this.r++;
     if (this.r >= this.tape.length) {
       this.tape.push("");
       this.onTapeWrite(this.tape);
     }
     this.onRMove(this.r);
+
+    // console.log("Move right after");
+    // console.log(this.r);
   }
 
   writeToTape(symbol: string): void {

@@ -7,50 +7,60 @@ import {
   View,
 } from "react-native";
 
+import { useRef, useEffect, useState } from "react";
+
 import programs from "./classes/programs";
 
 import { TuringMachine } from "./classes/TuringMachine";
 
+const program = programs.alternateZeroOne1;
+
 export default function App() {
-  // Event  handlers for machine state
-  const onTapeWrite = (tape: string[]) => {
-    // console.log("Tape written...");
-    // console.log(tape);
-  };
+  const [r, setR] = useState(0);
 
-  const onMCConfigChange = (mConfig: string) => {
-    console.log("Machine configuration changed...");
-    console.log(mConfig);
-  };
+  // TODO: I don't really understand this
+  const turingMachineRef = useRef<TuringMachine | null>(null);
 
-  const onRMove = (r: number) => {
-    console.log("Read/write head moved...");
-    console.log(r);
-  };
-
-  //   const turingMachine = new TuringMachine(programs.alternateZeroOne1);
-  //   const turingMachine = new TuringMachine(programs.alternateZeroOne2);
-  //   const turingMachine = new TuringMachine(programs.increasingOnes);
-  const turingMachine = new TuringMachine(
-    programs.alternateZeroOne1,
-    onTapeWrite,
-    onMCConfigChange,
-    onRMove
-  );
-
-  // State for the machine is comprised of:
-  // tape (infinite tape of symbols)
-  // r (read/write head index)
-  // mConfig (name of the machine configuration)
+  useEffect(() => {
+    turingMachineRef.current = new TuringMachine(
+      program,
+      (tape) => {
+        console.log("onTapeWrite", tape);
+      },
+      (mConfig) => {
+        console.log("onMCConfigChange", mConfig);
+      },
+      (r) => {
+        console.log("onRMove", r);
+        setR(r);
+      }
+    );
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <Text>Turing Machine...</Text>
-      <View style={styles.machineState}></View>
+      <View style={styles.machineState}>
+        {/* <View>
+          <Text>
+            <Text style={{ fontWeight: "bold" }}>Tape:</Text> {tape}
+          </Text>
+        </View> */}
+        <View>
+          <Text>
+            <Text style={{ fontWeight: "bold" }}>r:</Text> {r}
+          </Text>
+        </View>
+        {/* <View>
+          <Text>
+            <Text style={{ fontWeight: "bold" }}>mConfig:</Text> {mConfig}
+          </Text>
+        </View> */}
+      </View>
       <Button
         title="Scan"
         onPress={() => {
-          turingMachine.scan();
+          turingMachineRef.current?.scan();
         }}
       />
     </SafeAreaView>
@@ -67,7 +77,7 @@ const styles = StyleSheet.create({
   },
   machineState: {
     backgroundColor: "#f0f0f0",
-    flexDirection: "row",
+    // flexDirection: "row",
     marginVertical: 20,
   },
 });
