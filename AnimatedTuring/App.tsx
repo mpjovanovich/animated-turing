@@ -1,6 +1,7 @@
 import {
-  Button,
+  Pressable,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -43,66 +44,66 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Turing Machine</Text>
-      <View style={styles.content}>
-        <View style={styles.machineState}>
-          <View style={styles.tape}>
-            {/* Loop through tape and display each symbol */}
-            {tape.map((symbol, i) => (
-              <View style={styles.squareWrapper}>
-                <Text
-                  key={i}
-                  style={
-                    i === r
-                      ? [styles.square, styles.activeSquare]
-                      : styles.square
-                  }
-                >
-                  {symbol ? symbol : " "}
-                </Text>
-                <View style={i === r ? styles.writeHead : null} />
-              </View>
-            ))}
-          </View>
-          <View>
-            <Text>
-              <Text style={{ fontWeight: "bold" }}>r:</Text> {r}
-            </Text>
-          </View>
-          <View>
-            <Text>
-              <Text style={{ fontWeight: "bold" }}>mConfig:</Text> {mConfig}
-            </Text>
-          </View>
-        </View>
-        <Button
-          title="Scan"
-          onPress={() => {
-            turingMachineRef.current?.scan();
-          }}
-        />
+      <Text style={styles.title}>Animated Turing</Text>
+      {/* Was working without this view... */}
+      <Text>
+        <Text style={{ fontWeight: "bold" }}>mConfig:</Text> {mConfig}
+      </Text>
+      <View style={styles.tape}>
+        <ScrollView horizontal>
+          {tape.map((symbol, i) => (
+            <View key={i + "squareWrapper"} style={styles.squareWrapper}>
+              <Text
+                key={i + "squareText"}
+                style={
+                  i === r ? [styles.square, styles.activeSquare] : styles.square
+                }
+              >
+                {symbol ? symbol : " "}
+              </Text>
+              <View
+                key={i + "writeHead"}
+                style={i === r ? styles.writeHead : null}
+              />
+            </View>
+          ))}
+        </ScrollView>
       </View>
+      <Pressable
+        style={styles.button}
+        onPress={() => {
+          turingMachineRef.current?.scan();
+        }}
+      >
+        <Text style={styles.buttonText}>Scan</Text>
+      </Pressable>
     </SafeAreaView>
   );
 }
 
+// TODO: global styles
+// TODO: custom components
 const fontSize = 14;
-
 const styles = StyleSheet.create({
+  button: {
+    alignItems: "center",
+    backgroundColor: "#a345fc",
+    borderRadius: 5,
+    padding: 10,
+    width: 100,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: fontSize,
+    fontWeight: "bold",
+  },
   container: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
     paddingTop: StatusBar.currentHeight,
-    backgroundColor: "#fff",
-  },
-  content: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  machineState: {
-    margin: 20,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "lightgray",
   },
   squareWrapper: {
     alignItems: "center",
@@ -132,8 +133,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   tape: {
-    flexDirection: "row",
-    marginBottom: 10,
+    margin: 20,
+    width: "90%",
+    // debug
+    // backgroundColor: "lightblue",
   },
   title: {
     fontSize: 20,
