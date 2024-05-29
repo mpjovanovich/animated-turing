@@ -42,12 +42,25 @@ export default function App() {
     );
   }, []);
 
+  const scrollViewRef = useRef<ScrollView | null>(null);
+
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({
+        x: r * (tapeSquareWidth + tapeSquarePadding * 2),
+        animated: true,
+      });
+    }
+  }, [r]);
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Animated Turing</Text>
       <View style={styles.machine}>
+        {/* TODO: add program name and description to configs */}
+        <Text style={styles.programName}>Program Name</Text>
         <View style={styles.marginContainer}>
-          <ScrollView horizontal>
+          <ScrollView ref={scrollViewRef} horizontal>
             {tape.map((symbol, i) => (
               <View key={i + "squareWrapper"} style={styles.squareWrapper}>
                 <Text
@@ -69,6 +82,8 @@ export default function App() {
           </ScrollView>
         </View>
         <View style={styles.marginContainer}>
+          {/* TODO: m-config table */}
+          {/* Should be animated, showing actions as they happen */}
           <Text>
             <Text style={{ fontWeight: "bold" }}>mConfig:</Text> {mConfig}
           </Text>
@@ -89,6 +104,9 @@ export default function App() {
 // TODO: global styles
 // TODO: custom components
 const fontSize = 14;
+const tapeSquareWidth = fontSize * 2.5;
+const tapeSquarePadding = 10;
+
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
@@ -105,7 +123,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    // justifyContent: "center",
     overflow: "hidden",
     paddingTop: StatusBar.currentHeight,
     paddingBottom: 20,
@@ -113,7 +130,6 @@ const styles = StyleSheet.create({
   },
   machine: {
     flex: 1,
-    // padding: 30,
     width: "86%",
   },
   squareWrapper: {
@@ -125,9 +141,9 @@ const styles = StyleSheet.create({
     borderColor: "#000",
     fontSize: fontSize,
     marginHorizontal: 5,
-    padding: 10,
+    padding: tapeSquarePadding,
     textAlign: "center",
-    width: fontSize * 2.5,
+    width: tapeSquareWidth,
   },
   activeSquare: {
     borderWidth: 2,
@@ -142,6 +158,15 @@ const styles = StyleSheet.create({
     borderRightColor: "transparent",
     borderBottomColor: "red",
     marginTop: 5,
+    marginBottom: 5,
+  },
+  programName: {
+    fontSize: 18,
+    marginBottom: 10,
+    padding: 20,
+    textAlign: "center",
+    color: "#fff",
+    width: "100%",
   },
   title: {
     fontSize: 20,
