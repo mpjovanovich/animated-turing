@@ -51,6 +51,8 @@ export class TuringMachine {
   mConfig: string;
 
   // An infinite tape of symbols
+  // Note: We will use a mutable backing store for the tape, but return a new copy of the tape
+  // where it is consumed.
   tape: string[];
 
   // The current position of the read/write head
@@ -169,17 +171,15 @@ export class TuringMachine {
   moveRight(): void {
     this.r++;
     if (this.r >= this.tape.length) {
-      this.tape = [...this.tape];
       this.tape.push("");
-      this.onTapeWrite(this.tape);
+      this.onTapeWrite([...this.tape]);
     }
     this.onRMove(this.r);
   }
 
   writeToTape(symbol: string): void {
-    this.tape = [...this.tape];
     this.tape[this.r] = symbol;
-    this.onTapeWrite(this.tape);
+    this.onTapeWrite([...this.tape]);
   }
 
   printState(): void {
