@@ -45,29 +45,34 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Animated Turing</Text>
-      {/* Was working without this view... */}
-      <Text>
-        <Text style={{ fontWeight: "bold" }}>mConfig:</Text> {mConfig}
-      </Text>
-      <View style={styles.tape}>
-        <ScrollView horizontal>
-          {tape.map((symbol, i) => (
-            <View key={i + "squareWrapper"} style={styles.squareWrapper}>
-              <Text
-                key={i + "squareText"}
-                style={
-                  i === r ? [styles.square, styles.activeSquare] : styles.square
-                }
-              >
-                {symbol ? symbol : " "}
-              </Text>
-              <View
-                key={i + "writeHead"}
-                style={i === r ? styles.writeHead : null}
-              />
-            </View>
-          ))}
-        </ScrollView>
+      <View style={styles.machine}>
+        <View style={styles.marginContainer}>
+          <ScrollView horizontal>
+            {tape.map((symbol, i) => (
+              <View key={i + "squareWrapper"} style={styles.squareWrapper}>
+                <Text
+                  key={i + "squareText"}
+                  style={
+                    i === r
+                      ? [styles.square, styles.activeSquare]
+                      : styles.square
+                  }
+                >
+                  {symbol ? symbol : " "}
+                </Text>
+                <View
+                  key={i + "writeHead"}
+                  style={i === r ? styles.writeHead : null}
+                />
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+        <View style={styles.marginContainer}>
+          <Text>
+            <Text style={{ fontWeight: "bold" }}>mConfig:</Text> {mConfig}
+          </Text>
+        </View>
       </View>
       <Pressable
         style={styles.button}
@@ -100,10 +105,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
     overflow: "hidden",
     paddingTop: StatusBar.currentHeight,
+    paddingBottom: 20,
     backgroundColor: "lightgray",
+  },
+  machine: {
+    flex: 1,
+    // padding: 30,
+    width: "86%",
   },
   squareWrapper: {
     alignItems: "center",
@@ -132,17 +143,17 @@ const styles = StyleSheet.create({
     borderBottomColor: "red",
     marginTop: 5,
   },
-  tape: {
-    margin: 20,
-    width: "90%",
-    // debug
-    // backgroundColor: "lightblue",
-  },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
     padding: 20,
     textAlign: "center",
+    backgroundColor: "#a345fc",
+    color: "#fff",
+    width: "100%",
+  },
+  marginContainer: {
+    marginTop: 20,
   },
 });
