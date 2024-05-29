@@ -156,6 +156,7 @@ export class TuringMachine {
   moveLeft(): void {
     this.r--;
     if (this.r < 0) {
+      this.tape = [...this.tape];
       this.tape.unshift("");
       this.r = 0;
     }
@@ -168,6 +169,7 @@ export class TuringMachine {
   moveRight(): void {
     this.r++;
     if (this.r >= this.tape.length) {
+      this.tape = [...this.tape];
       this.tape.push("");
       this.onTapeWrite(this.tape);
     }
@@ -175,6 +177,7 @@ export class TuringMachine {
   }
 
   writeToTape(symbol: string): void {
+    this.tape = [...this.tape];
     this.tape[this.r] = symbol;
     this.onTapeWrite(this.tape);
   }

@@ -1,4 +1,5 @@
 import {
+  Animated,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -8,18 +9,44 @@ import {
   View,
 } from "react-native";
 
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import programs from "./classes/programs";
 
 import { TuringMachine } from "./classes/TuringMachine";
 
-const program = programs.alternateZeroOne1;
+// const program = programs.alternateZeroOne1;
+const program = programs.increasingOnes;
 
 export default function App() {
   const [tape, setTape] = useState([""]);
   const [r, setR] = useState(0);
   const [mConfig, setMConfig] = useState(program.initialConfig);
+
+  // TODO: look into this more - don't quite understand it yet.
+  const updateQueue = useRef<(() => void)[]>([]);
+  const isProcessing = useRef(false);
+
+  const processUpdates = async () => {
+    // Poor man's semaphore
+    isProcessing.current = true;
+
+    while (updateQueue.current.length > 0) {
+      console.log("processing updates");
+      console.log("queue length: ", updateQueue.current.length);
+      const update = updateQueue.current.shift();
+
+      // We don't want all of the state updates to happen at once,
+      // so we'll wait a little before processing the next one
+      await new Promise((resolve) => {
+        update && update();
+        setTimeout(resolve, 500);
+      });
+      console.log("delay over");
+    }
+
+    isProcessing.current = false;
+  };
 
   // TODO: look into this more - don't quite understand it yet.
   const turingMachineRef = useRef<TuringMachine | null>(null);
@@ -31,19 +58,39 @@ export default function App() {
     turingMachineRef.current = new TuringMachine(
       program,
       (tape) => {
-        setTape(tape);
+        // Queue an update to the tape
+        updateQueue.current.push(() => {
+          setTape(tape);
+        });
+        // Only need to kick off the updateQueue function if it isn't already running
+        if (!isProcessing.current) {
+          processUpdates();
+        }
       },
       (mConfig) => {
-        setMConfig(mConfig);
+        // Queue an update to the tape
+        updateQueue.current.push(() => {
+          setMConfig(mConfig);
+        });
+        // Only need to kick off the updateQueue function if it isn't already running
+        if (!isProcessing.current) {
+          processUpdates();
+        }
       },
       (r) => {
-        setR(r);
+        // Queue an update to the tape
+        updateQueue.current.push(() => {
+          setR(r);
+        });
+        // Only need to kick off the updateQueue function if it isn't already running
+        if (!isProcessing.current) {
+          processUpdates();
+        }
       }
     );
   }, []);
 
   const scrollViewRef = useRef<ScrollView | null>(null);
-
   useEffect(() => {
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollTo({
@@ -90,6 +137,8 @@ export default function App() {
         </View>
       </View>
       <Pressable
+        // TODO:
+        // disabled={isProcessing.current === true}
         style={styles.button}
         onPress={() => {
           turingMachineRef.current?.scan();
@@ -165,7 +214,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     padding: 20,
     textAlign: "center",
-    color: "#fff",
     width: "100%",
   },
   title: {
