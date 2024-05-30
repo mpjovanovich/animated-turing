@@ -22,30 +22,31 @@ export default function App() {
   const [tape, setTape] = useState([""]);
   const [r, setR] = useState(0);
   const [mConfig, setMConfig] = useState(program.initialConfig);
+  const [uiEnabled, setUIEnabled] = useState(true);
 
   // TODO: look into this more - don't quite understand it yet.
   const updateQueue = useRef<(() => void)[]>([]);
   const isProcessing = useRef(false);
+
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
   const processUpdates = async () => {
     // Poor man's semaphore
     isProcessing.current = true;
 
     while (updateQueue.current.length > 0) {
-      console.log("processing updates");
-      console.log("queue length: ", updateQueue.current.length);
       const update = updateQueue.current.shift();
+      console.log("items remaining: ", updateQueue.current.length);
 
       // We don't want all of the state updates to happen at once,
       // so we'll wait a little before processing the next one
-      await new Promise((resolve) => {
-        update && update();
-        setTimeout(resolve, 500);
-      });
-      console.log("delay over");
+      update && update();
+      await delay(500);
     }
 
     isProcessing.current = false;
+    setUIEnabled(true);
   };
 
   // TODO: look into this more - don't quite understand it yet.
@@ -122,7 +123,7 @@ export default function App() {
                 </Text>
                 <View
                   key={i + "writeHead"}
-                  style={i === r ? styles.writeHead : null}
+                  style={i === r && styles.writeHead}
                 />
               </View>
             ))}
@@ -137,10 +138,10 @@ export default function App() {
         </View>
       </View>
       <Pressable
-        // TODO:
-        // disabled={isProcessing.current === true}
-        style={styles.button}
+        disabled={!uiEnabled}
+        style={[styles.button, !uiEnabled && { backgroundColor: "gray" }]}
         onPress={() => {
+          setUIEnabled(false);
           turingMachineRef.current?.scan();
         }}
       >

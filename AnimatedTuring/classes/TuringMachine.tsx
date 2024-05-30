@@ -114,9 +114,6 @@ export class TuringMachine {
   ]);
 
   scan(): void {
-    // DEBUg
-    // console.log("Current r: ", this.r);
-
     // Get the action that maps to the current mConfig and symbol
     const symbolResolutionFunction = this.program.symbolResolutionFunctions.get(
       this.mConfig
@@ -133,10 +130,6 @@ export class TuringMachine {
     if (!action) {
       throw new Error("No action found for configSymbol: " + configSymbol);
     }
-
-    // DEBUG
-    // console.log(this.r);
-    // console.log(configSymbol);
 
     // Execute the operations
     action.operations.forEach((operation) => {
@@ -163,9 +156,6 @@ export class TuringMachine {
       this.r = 0;
     }
     this.onRMove(this.r);
-
-    console.log("Move left");
-    console.log(this.r);
   }
 
   moveRight(): void {
@@ -184,7 +174,6 @@ export class TuringMachine {
 
   printState(): void {
     this.printTape();
-    console.log("mConfig: ", this.mConfig);
   }
 
   printTape(): void {
