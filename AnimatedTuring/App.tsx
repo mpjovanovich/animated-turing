@@ -11,17 +11,19 @@ import {
 
 import React, { useRef, useEffect, useState } from "react";
 
-// import programs from "./classes/programs";
+import { alternateZeroOne1 } from "./classes/programs";
 
-// import { TuringMachine } from "./classes/TuringMachine";
+import TuringMachine from "./classes/TuringMachine";
 
-// const program = programs.alternateZeroOne1;
+const program = alternateZeroOne1;
 
 export default function App() {
+  const turingMachine = new TuringMachine(program);
+
   //   const [tape, setTape] = useState([""]);
   //   const [r, setR] = useState(0);
   //   const [mConfig, setMConfig] = useState(program.initialConfig);
-  //   const [uiEnabled, setUIEnabled] = useState(true);
+  const [uiEnabled, setUIEnabled] = useState(true);
 
   //   // TODO: look into this more - don't quite understand it yet.
   //   const updateQueue = useRef<(() => void)[]>([]);
@@ -132,17 +134,18 @@ export default function App() {
             <Text style={{ fontWeight: "bold" }}>mConfig:</Text> {mConfig}
           </Text>
         </View>
-      </View>
+      </View> */}
       <Pressable
         disabled={!uiEnabled}
         style={[styles.button, !uiEnabled && { backgroundColor: "gray" }]}
         onPress={() => {
           setUIEnabled(false);
-          turingMachineRef.current?.scan();
+          //   turingMachineRef.current?.scan();
+          turingMachine.scan();
         }}
       >
         <Text style={styles.buttonText}>Scan</Text>
-      </Pressable> */}
+      </Pressable>
     </SafeAreaView>
   );
 }

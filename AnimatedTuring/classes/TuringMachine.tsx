@@ -1,6 +1,6 @@
 import { mFunction, Operation } from "./Program";
 
-export class TuringMachine {
+export default class TuringMachine {
   //   // Call stack
   //   stack: Program[] = [];
 
@@ -24,10 +24,10 @@ export class TuringMachine {
   //   onRMove: (r: number) => void;
 
   constructor(
-    initialMConfig: mFunction,
-    onTapeWrite: (tape: string[]) => void,
-    onMCConfigChange: (mConfig: string) => void,
-    onRMove: (r: number) => void
+    initialMConfig: mFunction
+    // onTapeWrite: (tape: string[]) => void,
+    // onMCConfigChange: (mConfig: string) => void,
+    // onRMove: (r: number) => void
   ) {
     this.tape = [""];
     this.r = 0;
@@ -73,38 +73,22 @@ export class TuringMachine {
   ]);
 
   scan(): void {
-    const tapeSymbol = this.tape[this.r];
+    const behavior = this.currentMFunction.getBehavior(this.tape[this.r]);
+    if (!behavior) {
+      throw new Error("No behavior found for symbol: " + this.tape[this.r]);
+    }
 
-    //   // Get the action that maps to the current mConfig and symbol
-    //   const symbolResolutionFunction = this.program.symbolResolutionFunctions.get(
-    //     this.mConfig
-    //   );
-    //   if (!symbolResolutionFunction) {
-    //     throw new Error(
-    //       `No symbol resolution function found for mConfig: ${this.mConfig}`
-    //     );
-    //   }
+    // Execute the operations
+    behavior.operations.forEach((operation) => {
+      const operationFunction = this.operationFunction.get(operation);
+      if (operationFunction) {
+        operationFunction();
+      } else {
+        throw new Error("No operation found for operation: " + operation);
+      }
+    });
 
-    //   // configSymbol is the combination of the mConfig and the symbol at the current position.
-    //   // This will map to a single action (set of operations and final mConfig).
-    //   // Get the configSymbol by calling the function
-    //   const configSymbol = symbolResolutionFunction(this.tape[this.r]);
-    //   const action = this.program.actions.get(configSymbol);
-    //   if (!action) {
-    //     throw new Error("No action found for configSymbol: " + configSymbol);
-    //   }
-
-    //   // Execute the operations
-    //   action.operations.forEach((operation) => {
-    //     const operationFunction = this.operationFunction.get(operation);
-    //     if (operationFunction) {
-    //       operationFunction();
-    //     } else {
-    //       throw new Error("No operation found for operation: " + operation);
-    //     }
-    //   });
-
-    //   this.mConfig = action.finalMConfig;
+    this.currentMFunction = behavior.finalMConfig;
     //   this.onMCConfigChange(this.mConfig);
 
     // Debug
