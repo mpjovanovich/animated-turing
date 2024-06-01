@@ -3,11 +3,11 @@ import { mFunction, Operation } from "../Program";
 // Each program is wrapped in a namespace to avoid naming conflicts.
 export namespace IncreasingOnes {
   // p87
-  const b = new mFunction();
-  const o = new mFunction();
-  const q = new mFunction();
-  const p = new mFunction();
-  const k = new mFunction();
+  const b = new mFunction("b");
+  const o = new mFunction("o");
+  const q = new mFunction("q");
+  const p = new mFunction("p");
+  const k = new mFunction("k");
 
   b.addBranch(
     "None",

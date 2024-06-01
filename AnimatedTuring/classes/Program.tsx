@@ -54,6 +54,11 @@ export interface Branch {
 
 export class mFunction {
   private branches: Branch[] = [];
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
 
   addBranch(
     symbol: string,
