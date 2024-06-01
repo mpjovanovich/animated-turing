@@ -1,12 +1,12 @@
-import { mFunction, Operation } from "../Program";
+import { configMap, Operation } from "../Program";
 
 // p87
 export namespace IncreasingOnes {
-  const b = new mFunction("b");
-  const o = new mFunction("o");
-  const q = new mFunction("q");
-  const p = new mFunction("p");
-  const k = new mFunction("k");
+  const b = new configMap("b");
+  const o = new configMap("o");
+  const q = new configMap("q");
+  const p = new configMap("p");
+  const f = new configMap("f");
 
   b.addBranch(
     "None",
@@ -44,11 +44,11 @@ export namespace IncreasingOnes {
   q.addBranch("None", [Operation.PRINT1, Operation.LEFT], p);
 
   p.addBranch("x", [Operation.ERASE, Operation.RIGHT], q);
-  p.addBranch("ə", [Operation.RIGHT], k);
+  p.addBranch("ə", [Operation.RIGHT], f);
   p.addBranch("None", [Operation.LEFT, Operation.LEFT], p);
 
-  k.addBranch("Any", [Operation.RIGHT, Operation.RIGHT], k);
-  k.addBranch("None", [Operation.PRINT0, Operation.LEFT, Operation.LEFT], o);
+  f.addBranch("Any", [Operation.RIGHT, Operation.RIGHT], f);
+  f.addBranch("None", [Operation.PRINT0, Operation.LEFT, Operation.LEFT], o);
 
   // This is the initial configuration
   export const program = b;

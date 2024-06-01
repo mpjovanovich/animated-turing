@@ -1,5 +1,5 @@
 /* ****************************************************************
- * The mFunction class is a recursive data structure that represents an "entry" from one of Turing's program tables.
+ * The configMap class is a recursive data structure that represents an "entry" from one of Turing's program tables.
  *
  * An example program looks something like this:
  * {
@@ -30,7 +30,7 @@
  *
  * Please refer to the Operations enum to see the available operations.
  *
- * The final m-config is another instance of the mFunction class.
+ * The final m-config is another instance of the configMap class.
  * **************************************************************** */
 export enum Operation {
   PRINT0 = "P0",
@@ -44,7 +44,7 @@ export enum Operation {
 
 export interface Behavior {
   operations: Operation[];
-  finalMConfig: mFunction;
+  finalMConfig: configMap;
 }
 
 export interface Branch {
@@ -52,21 +52,18 @@ export interface Branch {
   behavior: Behavior;
 }
 
-export class mFunction {
+export class configMap {
   private branches: Branch[] = [];
-  // Mapped symbol?
-  // Mapped mFunction?
   name: string;
 
   constructor(name: string) {
     this.name = name;
-    // this.args = args;
   }
 
   addBranch(
-    symbol: string,
+    symbol: string, // symbol may be the symbol itself or a lookup variable
     operations: Operation[],
-    finalMConfig: mFunction
+    finalMConfig: configMap
   ): void {
     this.branches.push({ symbol, behavior: { operations, finalMConfig } });
   }

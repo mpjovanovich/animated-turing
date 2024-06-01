@@ -1,14 +1,14 @@
-import { mFunction, Operation } from "./Program";
+import { configMap, Operation } from "./Program";
 
 export default class TuringMachine {
   //   // Call stack
   //   stack: Program[] = [];
 
-  currentMFunction: mFunction;
+  currentMFunction: configMap;
 
   // Terminology per Turing's original paper:
   // the "machine configuration" or "state" of the machine
-  //   mConfig: mFunction;
+  //   mConfig: configMap;
 
   // An infinite tape of symbols
   // Note: We will use a mutable backing store for the tape, but return a new copy of the tape
@@ -24,7 +24,7 @@ export default class TuringMachine {
   //   onRMove: (r: number) => void;
 
   constructor(
-    initialMConfig: mFunction
+    initialMConfig: configMap
     // onTapeWrite: (tape: string[]) => void,
     // onMCConfigChange: (mConfig: string) => void,
     // onRMove: (r: number) => void
