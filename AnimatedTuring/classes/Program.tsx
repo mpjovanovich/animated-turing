@@ -30,7 +30,7 @@
  *
  * Please refer to the Operations enum to see the available operations.
  *
- * The final m-config is another instance of the program class.
+ * The final m-config is another instance of the mFunction class.
  * **************************************************************** */
 export enum Operation {
   PRINT0 = "P0",
@@ -54,10 +54,13 @@ export interface Branch {
 
 export class mFunction {
   private branches: Branch[] = [];
+  // Mapped symbol?
+  // Mapped mFunction?
   name: string;
 
   constructor(name: string) {
     this.name = name;
+    // this.args = args;
   }
 
   addBranch(
