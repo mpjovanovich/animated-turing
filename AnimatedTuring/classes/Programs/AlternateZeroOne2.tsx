@@ -1,8 +1,7 @@
 import { mFunction, Operation } from "../Program";
 
-// Each program is wrapped in a namespace to avoid naming conflicts.
+// p84
 export namespace AlternateZeroOne2 {
-  // p84
   const b = new mFunction("b");
   b.addBranch("None", [Operation.PRINT0], b);
   b.addBranch("0", [Operation.RIGHT, Operation.RIGHT, Operation.PRINT1], b);

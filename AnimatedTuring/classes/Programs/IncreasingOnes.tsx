@@ -1,8 +1,7 @@
 import { mFunction, Operation } from "../Program";
 
-// Each program is wrapped in a namespace to avoid naming conflicts.
+// p87
 export namespace IncreasingOnes {
-  // p87
   const b = new mFunction("b");
   const o = new mFunction("o");
   const q = new mFunction("q");
