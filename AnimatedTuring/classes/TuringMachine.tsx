@@ -15,6 +15,12 @@ export enum Operation {
   RIGHT,
 }
 
+// To make the function compositions work, even basic m-configs are treated like functions (programs).
+// All arguments are also functions. There may be zero to infinite arguments.
+export class mFunction {
+  constructor() {}
+}
+
 // It's helpful for me to think of operations in terms of state-action pairs
 // Each state (mConfig, symbol) maps to an action
 export class Action {
@@ -32,7 +38,7 @@ export interface Program {
   initialConfig: string;
 
   // This is a map of the form "mConfig-symbol" to Action -
-  // the state-action pairs
+  // the state-action pairs. This is the actual "program" of the machine.
   actions: Map<string, Action>;
 
   // There are often many inputs that map to a single Action.
@@ -44,6 +50,9 @@ export interface Program {
 }
 
 export class TuringMachine {
+  // Call stack
+  stack: Program[] = [];
+
   program: Program;
 
   // Terminology per Turing's original paper:
@@ -124,6 +133,8 @@ export class TuringMachine {
       );
     }
 
+    // configSymbol is the combination of the mConfig and the symbol at the current position.
+    // This will map to a single action (set of operations and final mConfig).
     // Get the configSymbol by calling the function
     const configSymbol = symbolResolutionFunction(this.tape[this.r]);
     const action = this.program.actions.get(configSymbol);

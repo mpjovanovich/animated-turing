@@ -1,5 +1,11 @@
 import { Action, Operation, Program } from "./TuringMachine";
 
+// TODO: final mConfig can be a function of the form: f(mConfig, mConfig, symbol)
+// These Turing calls "m-functions".
+// Programs will need to be updated to accept arguments.
+
+// TODO: Ability to swap in subroutines.
+
 const programs: Record<string, Program> = {
   // p81
   alternateZeroOne1: {
