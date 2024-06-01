@@ -1,5 +1,5 @@
 /* ****************************************************************
- * The Program class is a recursive data structure that represents a Turing program.
+ * The mFunction class is a recursive data structure that represents an "entry" from one of Turing's program tables.
  *
  * An example program looks something like this:
  * {
@@ -22,37 +22,47 @@
  * - [{P0}, "b"]
  *
  * Per Turing, symbol resolution strings shall be encoded in the form:
- * - "s" = "symbol", the exact symbol
- * - "!s" = "not symbol", any symbol other than "symbol"
- * - "" = "None", an empty square
+ * - "Any", any symbol
+ * - "None", an empty square
+ * - "s", the exact symbol
+ * - "not s", any symbol other than "symbol"
  * , where "s" is some symbol.
  *
  * Please refer to the Operations enum to see the available operations.
  *
  * The final m-config is another instance of the program class.
  * **************************************************************** */
-
-/* The machine can do the following:
-- Print
-- Erase
-- Move left
-- Move right
-- Stay
-*/
 export enum Operation {
-  PRINT0,
-  PRINT1,
-  PRINT_SCHWA,
-  PRINTX,
-  ERASE,
-  LEFT,
-  RIGHT,
+  PRINT0 = "Print 0",
+  PRINT1 = "Print 1",
+  PRINT_SCHWA = "Print Schwa",
+  PRINTX = "Print X",
+  ERASE = "Erase",
+  LEFT = "Move Left",
+  RIGHT = "Move Right",
 }
 
-export class Program {
-  branches: Map<string, [Operation[], Program]> = new Map();
+export class mFunction {
+  private branches: Map<String, [Operation[], mFunction]> = new Map();
 
-  constructor(branches: Map<string, [Operation[], Program]>) {
-    this.branches = branches;
+  addBranch(
+    symbol: string,
+    operations: Operation[],
+    finalMConfig: mFunction
+  ): void {
+    this.branches.set(symbol, [operations, finalMConfig]);
+  }
+
+  getAction(symbol: string): [Operation[], mFunction] | undefined {
+    return this.branches.get(symbol);
   }
 }
+
+// // A Program is really just a linked list of mFunctions.
+// export class Program {
+//   initialConfig: mFunction;
+
+//   constructor(initialConfig: mFunction) {
+//     this.initialConfig = initialConfig;
+//   }
+// }
