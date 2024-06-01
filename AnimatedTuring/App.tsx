@@ -15,7 +15,7 @@ import Programs from "./classes/Programs/Programs";
 
 import TuringMachine from "./classes/TuringMachine";
 
-const program = Programs.AlternateZeroOne2;
+const program = Programs.IncreasingOnes;
 
 export default function App() {
   const turingMachine = new TuringMachine(program);
