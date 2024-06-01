@@ -11,11 +11,11 @@ import {
 
 import React, { useRef, useEffect, useState } from "react";
 
-import { alternateZeroOne1 } from "./classes/programs";
+import Programs from "./classes/Programs/Programs";
 
 import TuringMachine from "./classes/TuringMachine";
 
-const program = alternateZeroOne1;
+const program = Programs.AlternateZeroOne1;
 
 export default function App() {
   const turingMachine = new TuringMachine(program);
@@ -139,7 +139,7 @@ export default function App() {
         disabled={!uiEnabled}
         style={[styles.button, !uiEnabled && { backgroundColor: "gray" }]}
         onPress={() => {
-          setUIEnabled(false);
+          //   setUIEnabled(false);
           //   turingMachineRef.current?.scan();
           turingMachine.scan();
         }}

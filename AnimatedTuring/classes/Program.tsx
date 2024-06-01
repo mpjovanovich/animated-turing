@@ -91,12 +91,3 @@ export class mFunction {
     }
   }
 }
-
-// // A Program is really just a linked list of mFunctions.
-// export class Program {
-//   initialConfig: mFunction;
-
-//   constructor(initialConfig: mFunction) {
-//     this.initialConfig = initialConfig;
-//   }
-// }
