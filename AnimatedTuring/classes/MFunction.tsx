@@ -1,5 +1,4 @@
 import { ConfigMap } from "./ConfigMap";
-import { Operation } from "./Operation";
 
 // Helper class that can hold either a ConfigMap or a string.
 // Makes the code neater.
@@ -7,16 +6,6 @@ import { Operation } from "./Operation";
 export class ConfigMapOrString {
   private _ConfigMapValue?: ConfigMap;
   private _stringValue?: string;
-
-  constructor(value: ConfigMap | string) {
-    if (typeof value === "string") {
-      this._stringValue = value;
-    } else if (value instanceof ConfigMap) {
-      this._ConfigMapValue = value;
-    } else {
-      throw new Error("Invalid type");
-    }
-  }
 
   get string(): string {
     if (this._stringValue) {
@@ -33,19 +22,42 @@ export class ConfigMapOrString {
       throw new Error("ConfigMapOrString is not a ConfigMap.");
     }
   }
+
+  set string(value: string) {
+    this._stringValue = value;
+  }
+
+  set ConfigMap(value: ConfigMap) {
+    this._ConfigMapValue = value;
+  }
 }
 
 // Function that takes any number of ConfigMaps and strings and returns an array of ConfigMaps.
-type FuncType = (...args: ConfigMapOrString[]) => ConfigMap[];
+// type FuncType = (...args: ConfigMapOrString[]) => ConfigMap[];
+type FuncArgs = {
+  [key: string]: ConfigMapOrString;
+};
+
+// let x: FuncArgs = {
+//   a: new ConfigMapOrString(),
+//   b: new ConfigMapOrString(),
+// };
 
 export class MFunction {
   description: string; // Friendly name for the m-function
   notation: string; // Math notation for the m-function
-  func: FuncType; // The function itself
+  argMap: FuncArgs; // Arguments to the function
+  func: (argMap: FuncArgs) => ConfigMap[];
 
-  constructor(description: string, notation: string, func: FuncType) {
+  constructor(
+    description: string,
+    notation: string,
+    argMap: FuncArgs,
+    func: (argMap: FuncArgs) => ConfigMap[]
+  ) {
     this.description = description;
     this.notation = notation;
+    this.argMap = argMap;
     this.func = func;
   }
 }
