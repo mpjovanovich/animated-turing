@@ -32,32 +32,36 @@ export class ConfigMapOrString {
   }
 }
 
-// Function that takes any number of ConfigMaps and strings and returns an array of ConfigMaps.
-// type FuncType = (...args: ConfigMapOrString[]) => ConfigMap[];
+// This allows us to create a JSON object with any number of keys, each of which is a ConfigMapOrString.
+// We will define and later set the arguments for the function using this object.
 type FuncArgs = {
   [key: string]: ConfigMapOrString;
 };
 
-// let x: FuncArgs = {
-//   a: new ConfigMapOrString(),
-//   b: new ConfigMapOrString(),
-// };
-
+// Function that takes any number of ConfigMaps and strings and returns an array of ConfigMaps.
 export class MFunction {
   description: string; // Friendly name for the m-function
   notation: string; // Math notation for the m-function
-  argMap: FuncArgs; // Arguments to the function
-  func: (argMap: FuncArgs) => ConfigMap[];
+  args: FuncArgs; // Arguments to the function
+  func: (args: FuncArgs) => ConfigMap[];
 
   constructor(
     description: string,
     notation: string,
-    argMap: FuncArgs,
-    func: (argMap: FuncArgs) => ConfigMap[]
+    args: FuncArgs,
+    func: (args: FuncArgs) => ConfigMap[]
   ) {
     this.description = description;
     this.notation = notation;
-    this.argMap = argMap;
+    this.args = args;
     this.func = func;
   }
 }
+
+// Example usage:
+// import {findSymbol} from "./Functions/FindSymbol";
+// findSymbol.args.a.string = "0";
+// findSymbol.args.C.ConfigMap = b;
+// for (const configMap of findSymbol.func(findSymbol.args)) {
+// ...add configMap to program...
+// }
