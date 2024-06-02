@@ -1,5 +1,5 @@
 /* ****************************************************************
- * The configMap class is a recursive data structure that represents an "entry" from one of Turing's program tables.
+ * The ConfigMap class is a recursive data structure that represents an "entry" from one of Turing's program tables.
  *
  * An example program looks something like this:
  * {
@@ -30,29 +30,13 @@
  *
  * Please refer to the Operations enum to see the available operations.
  *
- * The final m-config is another instance of the configMap class.
+ * The final m-config is another instance of the ConfigMap class.
  * **************************************************************** */
-export enum Operation {
-  PRINT0 = "P0",
-  PRINT1 = "P1",
-  PRINT_SCHWA = "Pə",
-  PRINTX = "Px",
-  ERASE = "E",
-  LEFT = "L",
-  RIGHT = "R",
-}
+import { Behavior } from "./Behavior";
+import { Branch } from "./Branch";
+import { Operation } from "./Operation";
 
-export interface Behavior {
-  operations: Operation[];
-  finalMConfig: configMap;
-}
-
-export interface Branch {
-  symbol: string;
-  behavior: Behavior;
-}
-
-export class configMap {
+export class ConfigMap {
   private branches: Branch[] = [];
   name: string;
 
@@ -63,7 +47,7 @@ export class configMap {
   addBranch(
     symbol: string, // symbol may be the symbol itself or a lookup variable
     operations: Operation[],
-    finalMConfig: configMap
+    finalMConfig: ConfigMap
   ): void {
     this.branches.push({ symbol, behavior: { operations, finalMConfig } });
   }

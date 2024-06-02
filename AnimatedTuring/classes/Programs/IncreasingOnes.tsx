@@ -1,12 +1,13 @@
-import { configMap, Operation } from "../Program";
+import { ConfigMap } from "../ConfigMap";
+import { Operation } from "../Operation";
 
 // p87
 export namespace IncreasingOnes {
-  const b = new configMap("b");
-  const o = new configMap("o");
-  const q = new configMap("q");
-  const p = new configMap("p");
-  const f = new configMap("f");
+  const b = new ConfigMap("b");
+  const o = new ConfigMap("o");
+  const q = new ConfigMap("q");
+  const p = new ConfigMap("p");
+  const f = new ConfigMap("f");
 
   b.addBranch(
     "None",

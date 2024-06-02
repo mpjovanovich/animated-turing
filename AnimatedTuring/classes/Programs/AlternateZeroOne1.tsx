@@ -1,11 +1,12 @@
-import { configMap, Operation } from "../Program";
+import { ConfigMap } from "../ConfigMap";
+import { Operation } from "../Operation";
 
 // p81
 export namespace AlternateZeroOne1 {
-  const b = new configMap("b");
-  const c = new configMap("c");
-  const e = new configMap("e");
-  const f = new configMap("f");
+  const b = new ConfigMap("b");
+  const c = new ConfigMap("c");
+  const e = new ConfigMap("e");
+  const f = new ConfigMap("f");
   b.addBranch("None", [Operation.PRINT0, Operation.RIGHT], c);
   c.addBranch("None", [Operation.RIGHT], e);
   e.addBranch("None", [Operation.PRINT1, Operation.RIGHT], f);
