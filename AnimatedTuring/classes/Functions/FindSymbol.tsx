@@ -1,6 +1,5 @@
-import { ConfigMap } from "../ConfigMap";
+import { ConfigMap, Operation } from "../ConfigMap";
 import { MFunction, ConfigMapOrString } from "../MFunction";
-import { Operation } from "../Operation";
 
 // TODO: friendly versions with common modern English symbols
 // p115

@@ -1,5 +1,4 @@
-import { ConfigMap } from "./ConfigMap";
-import { Operation } from "./Operation";
+import { ConfigMap, Operation } from "./ConfigMap";
 
 export default class TuringMachine {
   currentMFunction: ConfigMap;

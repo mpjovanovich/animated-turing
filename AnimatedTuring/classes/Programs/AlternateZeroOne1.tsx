@@ -1,5 +1,4 @@
-import { ConfigMap } from "../ConfigMap";
-import { Operation } from "../Operation";
+import { ConfigMap, Operation } from "../ConfigMap";
 
 // p81
 export namespace AlternateZeroOne1 {
