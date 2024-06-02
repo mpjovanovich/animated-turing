@@ -15,7 +15,8 @@ import Programs from "./classes/Programs/Programs";
 
 import TuringMachine from "./classes/TuringMachine";
 
-const program = Programs.IncreasingOnes;
+// const program = Programs.IncreasingOnes;
+const program = Programs.TestFindSymbol;
 
 export default function App() {
   const turingMachine = new TuringMachine(program);

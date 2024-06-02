@@ -43,13 +43,15 @@ export class MFunction {
   description: string; // Friendly name for the m-function
   notation: string; // Math notation for the m-function
   args: FuncArgs; // Arguments to the function
-  func: (args: FuncArgs) => ConfigMap[];
+  //   func: (args: FuncArgs) => ConfigMap[];
+  func: (args: FuncArgs) => ConfigMap;
 
   constructor(
     description: string,
     notation: string,
     args: FuncArgs,
-    func: (args: FuncArgs) => ConfigMap[]
+    // func: (args: FuncArgs) => ConfigMap[]
+    func: (args: FuncArgs) => ConfigMap
   ) {
     this.description = description;
     this.notation = notation;

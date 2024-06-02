@@ -118,6 +118,7 @@ export default class TuringMachine {
 
   printState(): void {
     this.printTape();
+    console.log("mConfig: " + this.currentMFunction.name);
   }
 
   printTape(): void {
