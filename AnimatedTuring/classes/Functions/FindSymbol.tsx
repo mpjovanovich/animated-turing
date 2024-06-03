@@ -20,6 +20,9 @@ export function findSymbol() {
 
       f.addBranch("ə", [Operation.LEFT], f1);
       f.addBranch("not ə", [Operation.LEFT], f);
+      // Note: this was added by me, not in the original code
+      // Was not working without it.
+      f.addBranch("None", [Operation.LEFT], f);
 
       f1.addBranch(args.a.string, [], args.C.ConfigMap);
       f1.addBranch("not " + args.a.string, [Operation.RIGHT], f1);

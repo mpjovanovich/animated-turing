@@ -3,6 +3,7 @@ import { findSymbol } from "../Functions/FindSymbol";
 
 // p84
 export namespace TestFindSymbol {
+  const a = new ConfigMap("a");
   const b = new ConfigMap("b");
   const c = new ConfigMap("found");
   const d = new ConfigMap("not found");
@@ -13,6 +14,19 @@ export namespace TestFindSymbol {
   find0.args.a.string = "0"; // Try to find this symbol
   find0.setConfigMaps();
 
+  a.addBranch(
+    "None",
+    [
+      Operation.PRINT_SCHWA,
+      Operation.RIGHT,
+      Operation.RIGHT,
+      Operation.PRINT_SCHWA,
+      Operation.RIGHT,
+      Operation.RIGHT,
+    ],
+    b
+  );
+
   b.addBranch("None", [Operation.PRINT0], b);
   b.addBranch("0", [Operation.RIGHT, Operation.RIGHT, Operation.PRINT1], b);
   b.addBranch(
@@ -20,9 +34,11 @@ export namespace TestFindSymbol {
     [Operation.RIGHT, Operation.RIGHT, Operation.PRINT0],
     find0.initialConfig
   );
+  c.addBranch("Any", [], c); // Terminal
   c.addBranch("None", [], c); // Terminal
+  d.addBranch("Any", [], d); // Terminal
   d.addBranch("None", [], d); // Terminal
 
   // This is the initial configuration
-  export const program = b;
+  export const program = a;
 }

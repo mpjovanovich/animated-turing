@@ -69,33 +69,31 @@ export class ConfigMap {
   }
 
   getBehavior(symbol: string): Behavior | undefined {
+    symbol = symbol.trim();
     for (const branch of this.branches) {
-      // Any
-      if (branch.symbol === "Any" && symbol) {
-        return branch.behavior;
-      }
-
-      // None
-      else if (branch.symbol === "None" && !symbol) {
-        return branch.behavior;
-      }
-
       // Exact match
-      else if (branch.symbol === symbol) {
+      if (symbol && symbol === branch.symbol) {
         return branch.behavior;
       }
 
       // Not match
-      else if (
-        // This line is wrong.
-        branch.symbol.includes("not ")
-      ) {
+      else if (branch.symbol.includes("not ")) {
         // Get last character of branch.symbol
         const notSymbol = branch.symbol.slice(-1);
 
-        if (symbol !== notSymbol) {
+        if (symbol && symbol !== notSymbol) {
           return branch.behavior;
         }
+      }
+
+      // Any
+      else if (symbol && branch.symbol === "Any") {
+        return branch.behavior;
+      }
+
+      // None
+      else if (!symbol && branch.symbol === "None") {
+        return branch.behavior;
       }
     }
   }
