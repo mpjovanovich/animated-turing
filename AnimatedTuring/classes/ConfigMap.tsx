@@ -70,14 +70,6 @@ export class ConfigMap {
 
   getBehavior(symbol: string): Behavior | undefined {
     for (const branch of this.branches) {
-      // DEBUG
-      console.log("branch.symbol: " + branch.symbol);
-      console.log("symbol: " + symbol);
-
-      // Broken here:
-      // branch.symbol: not ə
-      // symbol: 0
-
       // Any
       if (branch.symbol === "Any" && symbol) {
         return branch.behavior;
@@ -102,11 +94,6 @@ export class ConfigMap {
         const notSymbol = branch.symbol.slice(-1);
 
         if (symbol !== notSymbol) {
-          // DEBUG
-          // Broken here:
-          // branch.symbol: not ə
-          // symbol: 0
-          console.log("Not match: " + branch.symbol + ", " + symbol);
           return branch.behavior;
         }
       }
