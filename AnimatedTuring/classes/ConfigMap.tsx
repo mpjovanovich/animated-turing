@@ -72,16 +72,22 @@ export class ConfigMap {
     for (const branch of this.branches) {
       // Any
       if (branch.symbol === "Any" && symbol) {
+        // DEBUG
+        console.log("Any: " + branch.symbol + ", " + symbol);
         return branch.behavior;
       }
 
       // None
       else if (branch.symbol === "None" && !symbol) {
+        // DEBUG
+        console.log("None: " + branch.symbol + ", " + symbol);
         return branch.behavior;
       }
 
       // Exact match
       else if (branch.symbol === symbol) {
+        // DEBUG
+        console.log("Match: " + branch.symbol + ", " + symbol);
         return branch.behavior;
       }
 
@@ -91,6 +97,8 @@ export class ConfigMap {
         symbol &&
         symbol !== branch.symbol
       ) {
+        // DEBUG
+        console.log("Not match: " + branch.symbol + ", " + symbol);
         return branch.behavior;
       }
     }

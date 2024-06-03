@@ -1,7 +1,7 @@
 import { ConfigMap, Operation } from "./ConfigMap";
 
 export default class TuringMachine {
-  currentMFunction: ConfigMap;
+  currentConfigMap: ConfigMap;
 
   // Terminology per Turing's original paper:
   // the "machine configuration" or "state" of the machine
@@ -28,7 +28,7 @@ export default class TuringMachine {
   ) {
     this.tape = [""];
     this.r = 0;
-    this.currentMFunction = initialMConfig;
+    this.currentConfigMap = initialMConfig;
     // this.onTapeWrite = onTapeWrite;
     // this.onMCConfigChange = onMCConfigChange;
     // this.onRMove = onRMove;
@@ -70,7 +70,7 @@ export default class TuringMachine {
   ]);
 
   scan(): void {
-    const behavior = this.currentMFunction.getBehavior(this.tape[this.r]);
+    const behavior = this.currentConfigMap.getBehavior(this.tape[this.r]);
     if (!behavior) {
       throw new Error("No behavior found for symbol: " + this.tape[this.r]);
     }
@@ -85,7 +85,7 @@ export default class TuringMachine {
       }
     });
 
-    this.currentMFunction = behavior.finalMConfig;
+    this.currentConfigMap = behavior.finalMConfig;
     //   this.onMCConfigChange(this.mConfig);
 
     // Debug
@@ -118,7 +118,7 @@ export default class TuringMachine {
 
   printState(): void {
     this.printTape();
-    console.log("mConfig: " + this.currentMFunction.name);
+    console.log("mConfig: " + this.currentConfigMap.name);
   }
 
   printTape(): void {
