@@ -13,8 +13,7 @@ export function findSymbol() {
       B: new ConfigMapOrString(),
       a: new ConfigMapOrString(),
     },
-    // (args): ConfigMap[] => {
-    (args): ConfigMap => {
+    (args): ConfigMap[] => {
       const f = new ConfigMap("𝔣(ℭ, 𝔅, 𝛼)");
       const f1 = new ConfigMap("𝔣₁(ℭ, 𝔅, 𝛼)");
       const f2 = new ConfigMap("𝔣₂(ℭ, 𝔅, 𝛼)");
@@ -30,8 +29,7 @@ export function findSymbol() {
       f2.addBranch("not " + args.a.string, [Operation.RIGHT], f1);
       f2.addBranch("None", [Operation.RIGHT], args.B.ConfigMap);
 
-      //   return [f, f1, f2];
-      return f;
+      return [f, f1, f2];
     }
   );
 }
