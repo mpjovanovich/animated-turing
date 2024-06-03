@@ -72,6 +72,7 @@ export default class TuringMachine {
   scan(): void {
     const behavior = this.currentConfigMap.getBehavior(this.tape[this.r]);
     if (!behavior) {
+      console.log("mConfig: " + this.currentConfigMap.name);
       throw new Error("No behavior found for symbol: " + this.tape[this.r]);
     }
 
