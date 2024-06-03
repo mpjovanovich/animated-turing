@@ -1,6 +1,28 @@
-# animated-turing
+# Animated Turing
 
-Notes:
+## TODO: V1
+
+"subargs" branch is ready to be merged.
+
+- Add back existing UI
+- Add m-config tables for non m-function machines
+- Integrate m-functions into m-config tables
+- Add animations to smooth transitions and highlight important information
+- Polish UI, bringing it up to _minimal_ professional level
+- Device testing
+- Review comments / README and clean codebase
+- Add brief explanation pages. Don't get carried away with this or we will hit scope-creep issues.
+- _THIS IS ENOUGH FOR V1!_
+
+## V1.1
+
+Project management scaffolding put in place:
+
+- Git Issues
+- Web host
+- App store submissions
+
+## References
 
 Frightening German Gothic Calligraphy font can be found as Unicode, see the [Fraktur Wikipedia](https://en.wikipedia.org/wiki/Fraktur) page.
 
