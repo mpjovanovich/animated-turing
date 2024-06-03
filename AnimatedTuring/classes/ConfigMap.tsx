@@ -69,6 +69,10 @@ export class ConfigMap {
   }
 
   getBehavior(symbol: string): Behavior | undefined {
+    // For some machines we may have to alter Turing's tables. They seem to be inconsistent when
+    // using 'not a symbol, and 'None'.
+    // E.g: given {x, y, not x nor y}, we'd instead use {x, y, Any, None}
+
     symbol = symbol.trim();
     for (const branch of this.branches) {
       // Exact match

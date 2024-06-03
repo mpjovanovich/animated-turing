@@ -15,23 +15,23 @@ export default class TuringMachine {
   // The current position of the read/write head
   r: number = 0;
 
-  //   // Event handlers
-  //   onTapeWrite: (tape: string[]) => void;
-  //   onMCConfigChange: (mConfig: string) => void;
-  //   onRMove: (r: number) => void;
+  // Event handlers
+  onTapeWrite: (tape: string[]) => void;
+  onMCConfigChange: (mConfig: string) => void;
+  onRMove: (r: number) => void;
 
   constructor(
-    initialMConfig: ConfigMap
-    // onTapeWrite: (tape: string[]) => void,
-    // onMCConfigChange: (mConfig: string) => void,
-    // onRMove: (r: number) => void
+    initialMConfig: ConfigMap,
+    onTapeWrite: (tape: string[]) => void,
+    onMCConfigChange: (mConfig: string) => void,
+    onRMove: (r: number) => void
   ) {
     this.tape = [""];
     this.r = 0;
     this.currentConfigMap = initialMConfig;
-    // this.onTapeWrite = onTapeWrite;
-    // this.onMCConfigChange = onMCConfigChange;
-    // this.onRMove = onRMove;
+    this.onTapeWrite = onTapeWrite;
+    this.onMCConfigChange = onMCConfigChange;
+    this.onRMove = onRMove;
   }
 
   readonly operationFunction: Map<Operation, () => void> = new Map([
@@ -86,7 +86,7 @@ export default class TuringMachine {
     });
 
     this.currentConfigMap = behavior.finalMConfig;
-    //   this.onMCConfigChange(this.mConfig);
+    this.onMCConfigChange(this.currentConfigMap.name);
 
     // Debug
     this.printState();
@@ -99,21 +99,21 @@ export default class TuringMachine {
       this.tape.unshift("");
       this.r = 0;
     }
-    // this.onRMove(this.r);
+    this.onRMove(this.r);
   }
 
   moveRight(): void {
     this.r++;
     if (this.r >= this.tape.length) {
       this.tape.push("");
-      //   this.onTapeWrite([...this.tape]);
+      this.onTapeWrite([...this.tape]);
     }
-    // this.onRMove(this.r);
+    this.onRMove(this.r);
   }
 
   writeToTape(symbol: string): void {
     this.tape[this.r] = symbol;
-    // this.onTapeWrite([...this.tape]);
+    this.onTapeWrite([...this.tape]);
   }
 
   printState(): void {

@@ -2,13 +2,11 @@
 
 ## TODO: V1
 
-mFunctions work at runtime, but "FindSymbol" has a logic bug - it's not jumping to the right m-config when the write head is sitting on the symbol to be found, so it stays in state 'f' infinitely.
-
-"subargs" branch is ready to be merged.
-
 - Add back existing UI
 - Add m-config tables for non m-function machines
 - Integrate m-functions into m-config tables
+  - Will need to update descriptions for m-configs, plugging in arguments.
+  - "Step into" functionality for m-functions
 - Add animations to smooth transitions and highlight important information
 - Polish UI, bringing it up to _minimal_ professional level
 - Device testing

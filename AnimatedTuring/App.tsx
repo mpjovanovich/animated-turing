@@ -15,97 +15,95 @@ import Programs from "./classes/Programs/Programs";
 
 import TuringMachine from "./classes/TuringMachine";
 
-// const program = Programs.IncreasingOnes;
 const program = Programs.TestFindSymbol;
 
 export default function App() {
-  const turingMachine = new TuringMachine(program);
-
-  //   const [tape, setTape] = useState([""]);
-  //   const [r, setR] = useState(0);
-  //   const [mConfig, setMConfig] = useState(program.initialConfig);
+  const [tape, setTape] = useState([""]);
+  const [r, setR] = useState(0);
+  // "name" is actually the name of the initial m-config
+  const [mConfig, setMConfig] = useState(program.name);
   const [uiEnabled, setUIEnabled] = useState(true);
 
-  //   // TODO: look into this more - don't quite understand it yet.
-  //   const updateQueue = useRef<(() => void)[]>([]);
-  //   const isProcessing = useRef(false);
+  // TODO: look into this more - don't quite understand it yet.
+  const updateQueue = useRef<(() => void)[]>([]);
+  const isProcessing = useRef(false);
 
-  //   const delay = (ms: number) =>
-  //     new Promise((resolve) => setTimeout(resolve, ms));
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
-  //   const processUpdates = async () => {
-  //     // Poor man's semaphore
-  //     isProcessing.current = true;
+  const processUpdates = async () => {
+    // Poor man's semaphore
+    isProcessing.current = true;
 
-  //     while (updateQueue.current.length > 0) {
-  //       const update = updateQueue.current.shift();
-  //       console.log("items remaining: ", updateQueue.current.length);
+    while (updateQueue.current.length > 0) {
+      const update = updateQueue.current.shift();
+      console.log("items remaining: ", updateQueue.current.length);
 
-  //       // We don't want all of the state updates to happen at once,
-  //       // so we'll wait a little before processing the next one
-  //       update && update();
-  //       await delay(500);
-  //     }
+      // We don't want all of the state updates to happen at once,
+      // so we'll wait a little before processing the next one
+      update && update();
+      await delay(500);
+    }
 
-  //     isProcessing.current = false;
-  //     setUIEnabled(true);
-  //   };
+    isProcessing.current = false;
+    setUIEnabled(true);
+  };
 
-  //   // TODO: look into this more - don't quite understand it yet.
-  //   const turingMachineRef = useRef<TuringMachine | null>(null);
+  // TODO: look into this more - don't quite understand it yet.
+  const turingMachineRef = useRef<TuringMachine | null>(null);
 
-  //   // Make sure the TuringMachine is created only once
-  //   // After that we will let it update its own internal state,
-  //   // and observe those variables that we need.
-  //   useEffect(() => {
-  //     turingMachineRef.current = new TuringMachine(
-  //       program,
-  //       (tape) => {
-  //         // Queue an update to the tape
-  //         updateQueue.current.push(() => {
-  //           setTape(tape);
-  //         });
-  //         // Only need to kick off the updateQueue function if it isn't already running
-  //         if (!isProcessing.current) {
-  //           processUpdates();
-  //         }
-  //       },
-  //       (mConfig) => {
-  //         // Queue an update to the tape
-  //         updateQueue.current.push(() => {
-  //           setMConfig(mConfig);
-  //         });
-  //         // Only need to kick off the updateQueue function if it isn't already running
-  //         if (!isProcessing.current) {
-  //           processUpdates();
-  //         }
-  //       },
-  //       (r) => {
-  //         // Queue an update to the tape
-  //         updateQueue.current.push(() => {
-  //           setR(r);
-  //         });
-  //         // Only need to kick off the updateQueue function if it isn't already running
-  //         if (!isProcessing.current) {
-  //           processUpdates();
-  //         }
-  //       }
-  //     );
-  //   }, []);
+  // Make sure the TuringMachine is created only once
+  // After that we will let it update its own internal state,
+  // and observe those variables that we need.
+  useEffect(() => {
+    turingMachineRef.current = new TuringMachine(
+      program,
+      (tape) => {
+        // Queue an update to the tape
+        updateQueue.current.push(() => {
+          setTape(tape);
+        });
+        // Only need to kick off the updateQueue function if it isn't already running
+        if (!isProcessing.current) {
+          processUpdates();
+        }
+      },
+      (mConfig) => {
+        // Queue an update to the tape
+        updateQueue.current.push(() => {
+          setMConfig(mConfig);
+        });
+        // Only need to kick off the updateQueue function if it isn't already running
+        if (!isProcessing.current) {
+          processUpdates();
+        }
+      },
+      (r) => {
+        // Queue an update to the tape
+        updateQueue.current.push(() => {
+          setR(r);
+        });
+        // Only need to kick off the updateQueue function if it isn't already running
+        if (!isProcessing.current) {
+          processUpdates();
+        }
+      }
+    );
+  }, []);
 
-  //   const scrollViewRef = useRef<ScrollView | null>(null);
-  //   useEffect(() => {
-  //     if (scrollViewRef.current) {
-  //       scrollViewRef.current.scrollTo({
-  //         x: r * (tapeSquareWidth + tapeSquarePadding * 2),
-  //         animated: true,
-  //       });
-  //     }
-  //   }, [r]);
+  const scrollViewRef = useRef<ScrollView | null>(null);
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({
+        x: r * (tapeSquareWidth + tapeSquarePadding * 2),
+        animated: true,
+      });
+    }
+  }, [r]);
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Text style={styles.title}>Animated Turing</Text>
+      <Text style={styles.title}>Animated Turing</Text>
       <View style={styles.machine}>
         <Text style={styles.programName}>Program Name</Text>
         <View style={styles.marginContainer}>
@@ -135,14 +133,13 @@ export default function App() {
             <Text style={{ fontWeight: "bold" }}>mConfig:</Text> {mConfig}
           </Text>
         </View>
-      </View> */}
+      </View>
       <Pressable
         disabled={!uiEnabled}
         style={[styles.button, !uiEnabled && { backgroundColor: "gray" }]}
         onPress={() => {
-          //   setUIEnabled(false);
-          //   turingMachineRef.current?.scan();
-          turingMachine.scan();
+          setUIEnabled(false);
+          turingMachineRef.current?.scan();
         }}
       >
         <Text style={styles.buttonText}>Scan</Text>
