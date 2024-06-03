@@ -2,6 +2,8 @@
 
 ## TODO: V1
 
+mFunctions are not broken, but "FindSymbol" has a logic but - it's not jumping to the right m-config when the write head is sitting on the symbol to be found, so it stays in state 'f' infinitely.
+
 "subargs" branch is ready to be merged.
 
 - Add back existing UI
